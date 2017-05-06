@@ -9,7 +9,7 @@ import org.springframework.context.event.ContextClosedEvent
 import java.util.concurrent.TimeUnit
 
 
-class GracefulShutdown : TomcatConnectorCustomizer, ApplicationListener<ContextClosedEvent> {
+class GracefulShutdown(val shutdownTimeout: Long, val unit: TimeUnit) : TomcatConnectorCustomizer, ApplicationListener<ContextClosedEvent> {
 
     @Volatile private var connector: Connector? = null
 
@@ -24,8 +24,8 @@ class GracefulShutdown : TomcatConnectorCustomizer, ApplicationListener<ContextC
             try {
                 val threadPoolExecutor = executor
                 threadPoolExecutor.shutdown()
-                if (!threadPoolExecutor.awaitTermination(30, TimeUnit.SECONDS)) {
-                    log.warn("Tomcat thread pool did not shut down gracefully within " + "30 seconds. Proceeding with forceful shutdown")
+                if (!threadPoolExecutor.awaitTermination(shutdownTimeout, unit)) {
+                    log.warn("Tomcat thread pool did not shut down gracefully within $shutdownTimeout $unit. Proceeding with forceful shutdown")
                 }
             } catch (ex: InterruptedException) {
                 Thread.currentThread().interrupt()
