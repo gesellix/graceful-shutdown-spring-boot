@@ -22,9 +22,8 @@ class GracefulShutdown(val shutdownTimeout: Long, val unit: TimeUnit) : TomcatCo
         val executor = this.connector!!.protocolHandler.executor
         if (executor is ThreadPoolExecutor) {
             try {
-                val threadPoolExecutor = executor
-                threadPoolExecutor.shutdown()
-                if (!threadPoolExecutor.awaitTermination(shutdownTimeout, unit)) {
+                executor.shutdown()
+                if (!executor.awaitTermination(shutdownTimeout, unit)) {
                     log.warn("Tomcat thread pool did not shut down gracefully within $shutdownTimeout $unit. Proceeding with forceful shutdown")
                 }
             } catch (ex: InterruptedException) {

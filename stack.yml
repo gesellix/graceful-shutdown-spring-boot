@@ -1,0 +1,51 @@
+---
+
+# https://docs.traefik.io/user-guide/swarm-mode/
+# docker service create --name traefik --network traefik -p 9090:80 -p 9091:8080 --mount type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock traefik --docker --docker.swarmmode --docker.domain=traefik --docker.watch --web
+# docker service create --name app --network traefik --replicas 1 --label traefik.port=8080 --stop-grace-period 30s app
+
+version: "3.2"
+
+services:
+
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=gesellix.local  --docker.swarmmode --docker.watch
+    networks:
+      - traefik
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+
+  app:
+#    image: gesellix/graceful-spring-shutdown:...
+    image: gesellix/graceful-spring-shutdown:2
+    networks:
+      - traefik
+    stop_grace_period: 60s
+    deploy:
+      labels:
+        - "traefik.port=8080"
+        - "traefik.docker.network=traefik"
+        - "traefik.frontend.rule=Host:localhost"
+#        - "traefik.frontend.rule=Host:app.gesellix.local"
+#        - "traefik.frontend.rule=PathStrip:/..."
+#        - "traefik.backend=..."
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 30s
+      restart_policy:
+        condition: on-failure
+
+networks:
+  traefik:
+#    external: true
+    driver: overlay

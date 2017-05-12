@@ -1,5 +1,6 @@
 package de.gesellix.docker.zerodowntime
 
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -7,12 +8,13 @@ import java.util.stream.IntStream
 import javax.servlet.http.HttpServletResponse
 
 
+@CrossOrigin
 @RestController
 class CustomerController {
 
-    @GetMapping("/{name}")
-    fun findByLastName(@PathVariable name: String)
-            = "Hello $name!"
+    @GetMapping("/echo/{text}")
+    fun findByLastName(@PathVariable text: String)
+            = "Hello jo $text!"
 
     @GetMapping("/endless")
     fun downloadEndlessly(servletResponse: HttpServletResponse) {

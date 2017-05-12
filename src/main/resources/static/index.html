@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link rel="stylesheet" href="styles.css"/>
+
+    <script type="text/javascript">
+
+      function updateProgress(evt) {
+//        if (evt.lengthComputable) {
+//          // ...
+//        }
+        document.getElementById("received").innerHTML = evt.loaded;
+      }
+
+      function sendreq(prefix) {
+        var requestUri = document.getElementById(prefix + '-uri').value;
+        var req = new XMLHttpRequest();
+        req.onprogress = updateProgress;
+        req.open('GET', requestUri, true);
+        req.onreadystatechange = function (aEvt) {
+          if (req.readyState == 4) {
+            //run any callback here
+          }
+        };
+        req.send();
+      }
+
+    </script>
+
+</head>
+<body>
+
+<div style="width: 600px; max-width: 1000px; margin: 0 auto;">
+
+    <div class="row">
+        <div class="col c12">
+            <h1>Graceful Shutdown with Spring Boot</h1>
+        </div>
+    </div>
+
+    This little demo performs a request and prints the received bytes. For long running
+    requests like downloading a huge file the bytes will increase over time, which enables
+    you to verify that a deployment won't instantly break existing connections.
+
+    <div class="row">
+        <div class="col c6">
+            <p>check connectivity</p>
+            <input type="text" id="echo-uri" value="http://localhost/echo/foo" class="smooth">
+            <a class="btn btn-sm smooth" onclick="sendreq('echo');">check</a>
+        </div>
+        <div class="col c6">
+            <p>start an endless request</p>
+            <input type="text" id="endless-uri" value="http://localhost/endless" class="smooth">
+            <a class="btn btn-b btn-sm smooth" onclick="sendreq('endless');">go for it</a>
+        </div>
+    </div>
+
+    <div class="msg">
+        <div>received <span id="received">?</span> bytes</div>
+    </div>
+</div>
+
+</body>
+</html>
