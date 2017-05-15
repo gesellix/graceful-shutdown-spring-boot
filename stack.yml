@@ -25,8 +25,7 @@ services:
           - node.role==manager
 
   app:
-#    image: gesellix/graceful-spring-shutdown:...
-    image: gesellix/graceful-spring-shutdown:2
+    image: gesellix/graceful-spring-shutdown:${APP_VERSION:-2017-05-15T08-41-49}
     networks:
       - traefik
     stop_grace_period: 60s

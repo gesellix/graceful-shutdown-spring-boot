@@ -1,12 +1,22 @@
+import de.gesellix.gradle.docker.tasks.DockerBuildTask
+import de.gesellix.gradle.docker.tasks.DockerPushTask
+import de.gesellix.gradle.docker.tasks.DockerRmiTask
+
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 buildscript {
   ext {
+    dockerPluginVersion = '2017-05-15T00-22-47'
     kotlinVersion = '1.1.2-2'
     springBootVersion = '1.5.3.RELEASE'
   }
   repositories {
+    maven { url "https://plugins.gradle.org/m2/" }
     mavenCentral()
   }
   dependencies {
+    classpath("de.gesellix:gradle-docker-plugin:${dockerPluginVersion}")
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
     classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
@@ -17,8 +27,9 @@ apply plugin: 'kotlin'
 apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: "de.gesellix.docker"
 
-version = '0.0.1-SNAPSHOT'
+version = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss"))
 sourceCompatibility = JavaVersion.VERSION_1_8
 compileKotlin {
   kotlinOptions.jvmTarget = "1.8"
@@ -31,12 +42,47 @@ repositories {
   mavenCentral()
 }
 
-
 dependencies {
   compile('org.springframework.boot:spring-boot-starter-web')
   compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
   compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
   testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+ext {
+  dockerBuildContextSources = file("${projectDir}/src/main/docker")
+  dockerBuildContextDir = file("${buildDir}/docker")
+  dockerImageName = "gesellix/graceful-spring-shutdown"
+  dockerImageId = "${dockerImageName}:${project.version}"
+}
+
+task prepareBuildContext(type: Copy) {
+  from dockerBuildContextSources
+  into dockerBuildContextDir
+}
+
+task copyArtifact(type: Copy) {
+  dependsOn bootRepackage
+  dependsOn prepareBuildContext
+  from { jar }
+  into dockerBuildContextDir
+  rename { "app.jar" }
+}
+
+task rmiLocalImage(type: DockerRmiTask) {
+  imageId = dockerImageId
+}
+
+task buildImage(type: DockerBuildTask) {
+  dependsOn copyArtifact
+  buildContextDirectory = dockerBuildContextDir
+  imageName = dockerImageId
+}
+
+task publishImage(type: DockerPushTask, dependsOn: [buildImage]) {
+  repositoryName = buildImage.imageName
+  authConfigPlain = getDockerClient().readDefaultAuthConfig()
+  finalizedBy rmiLocalImage
 }
 
 task wrapper(type: Wrapper) {

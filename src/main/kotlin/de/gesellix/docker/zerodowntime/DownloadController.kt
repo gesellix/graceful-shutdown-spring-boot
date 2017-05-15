@@ -14,7 +14,7 @@ class CustomerController {
 
     @GetMapping("/echo/{text}")
     fun findByLastName(@PathVariable text: String)
-            = "Hello jo $text!"
+            = "Hello $text!"
 
     @GetMapping("/endless")
     fun downloadEndlessly(servletResponse: HttpServletResponse) {
