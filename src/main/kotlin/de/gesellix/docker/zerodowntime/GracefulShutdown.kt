@@ -21,6 +21,7 @@ class GracefulShutdown(val shutdownTimeout: Long, val unit: TimeUnit) : TomcatCo
         this.connector!!.pause()
         val executor = this.connector!!.protocolHandler.executor
         if (executor is ThreadPoolExecutor) {
+            log.warn("Context closed. Going to await termination for $shutdownTimeout $unit.")
             try {
                 executor.shutdown()
                 if (!executor.awaitTermination(shutdownTimeout, unit)) {
