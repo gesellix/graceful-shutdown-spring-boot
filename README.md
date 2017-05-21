@@ -14,6 +14,15 @@ with the only difference that I wanted to use Kotlin instead of standard Java.
 
 ## Usage
 
+### Basics
+
+Clone (or [download](https://github.com/gesellix/graceful-shutdown-spring-boot/archive/master.zip)) this repository:
+
+    git clone https://github.com/gesellix/graceful-shutdown-spring-boot
+    cd graceful-shutdown-spring-boot
+
+You'll need a Java Runtime Environment (JRE) to run the example without Docker.
+
 ### Without Docker (really?)
 
 - run the app, e.g. via `./gradlew bootRun`
@@ -46,8 +55,6 @@ Now the exciting part: you may want to update your app to use a fresh image or a
 
 Deploy a minimal stack with reverse proxy and two instances of the example app:
 
-    git clone https://github.com/gesellix/graceful-shutdown-spring-boot
-    cd graceful-shutdown-spring-boot
     docker swarm init # you may add more worker nodes, but that's not necessary for the demo.
     docker stack deploy -c stack.yml grace
 
