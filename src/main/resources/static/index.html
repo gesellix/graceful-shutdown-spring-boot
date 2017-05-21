@@ -18,8 +18,8 @@
         var req = new XMLHttpRequest();
         req.onprogress = updateProgress;
         req.open('GET', requestUri, true);
-        req.onreadystatechange = function (aEvt) {
-          if (req.readyState == 4) {
+        req.onreadystatechange = function (evt) {
+          if (req.readyState === 4) {
             //run any callback here
           }
         };
@@ -46,12 +46,12 @@
     <div class="row">
         <div class="col c6">
             <p>check connectivity</p>
-            <input type="text" id="echo-uri" value="http://localhost/echo/foo" class="smooth">
+            <input id="echo-uri" value="http://localhost/echo/foo" class="smooth" title="Request url to perform a simple get request">
             <a class="btn btn-sm smooth" onclick="sendreq('echo');">check</a>
         </div>
         <div class="col c6">
             <p>start an endless request</p>
-            <input type="text" id="endless-uri" value="http://localhost/endless" class="smooth">
+            <input id="endless-uri" value="http://localhost/endless" class="smooth" title="Request url to perform an endless request">
             <a class="btn btn-b btn-sm smooth" onclick="sendreq('endless');">go for it</a>
         </div>
     </div>
