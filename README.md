@@ -29,7 +29,9 @@ You'll need a Java Runtime Environment (JRE) to run the example without Docker.
 - perform a looooong download: `curl -X GET "http://localhost:8080/endless" > /dev/null`
 - send `SIGTERM` to the Spring process (you can find the `<pid>` in the application logs): `kill <pid>`
 
-### Zero downtime rolling deployment with Docker Stack
+### Docker Stack/Service
+
+#### Some background information
 
 Using Docker Stack or Docker Services, you'll need to be aware of the underlying mechanics of a rolling update.
  You can find a detailed discussion about that topic at [github.com/moby/moby/issues/30321](https://github.com/moby/moby/issues/30321).
@@ -46,6 +48,8 @@ In a Spring Boot world, you'll need to tweak the following settings:
 - Your replicated service tasks shouldn't be shutdown simultaneously. That's why the `stack.yml`
   configures the `services.app.deploy.update_config.parallelism` to be sequentially. Additionally,
   I configured the `services.app.deploy.update_config.delay` to be 60s.
+
+#### Perform a zero downtime deployment
 
 Now the exciting part: you may want to update your app to use a fresh image or add some environment parameter.
  Such updates would trigger a short downtime of your running containers, which effectively would stop your
