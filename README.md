@@ -89,4 +89,5 @@ The `GracefulShutdown` class listens to application events of type `ContextClose
  it blocks the JVM shutdown to wait for the Tomcat to be finished with pending requests.
 
 Please note that you won't get any guarantees that the JVM will wait endlessly for your shutdown hook to return.
-It might interrupt your shutdown hook without further notice. My JVM implementation on macOS seems to be patient enough :)
+It might interrupt your shutdown hook without further notice. My JVM implementation on macOS and the one in an alpine
+container seems to be patient enough :)
