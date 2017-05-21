@@ -29,8 +29,8 @@ services:
     networks:
       - traefik
     environment:
-      - "CATALINA.THREADPOOL.EXECUTION.TIMEOUT.SECONDS=60"
-    stop_grace_period: 90s
+      - "CATALINA.THREADPOOL.EXECUTION.TIMEOUT.SECONDS=30"
+    stop_grace_period: 60s
     deploy:
       labels:
         - "traefik.port=8080"
@@ -42,7 +42,7 @@ services:
       replicas: 2
       update_config:
         parallelism: 1
-        delay: 30s
+        delay: 60s
       restart_policy:
         condition: on-failure
 
