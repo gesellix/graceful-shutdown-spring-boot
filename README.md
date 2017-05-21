@@ -46,7 +46,9 @@ Now the exciting part: you may want to update your app to use a fresh image or a
 
 Deploy a minimal stack with reverse proxy and two instances of the example app:
 
-    docker swarm init # you may add more worker nodes, but that's not necessary for the demo. 
+    git clone https://github.com/gesellix/graceful-shutdown-spring-boot
+    cd graceful-shutdown-spring-boot
+    docker swarm init # you may add more worker nodes, but that's not necessary for the demo.
     docker stack deploy -c stack.yml grace
 
 We can now start the demo scenario by first starting a download and then trying to update the app service.
