@@ -12,6 +12,8 @@ This project is a showcase for an example of how to gracefully shut down a Sprin
 The code is more or less a plain copy from https://github.com/spring-projects/spring-boot/issues/4657#issuecomment-161354811
 with the only difference that I wanted to use Kotlin instead of standard Java.
 
+I also wrote a more detailed [article about our motivation](https://www.gesellix.net/zero-downtime-deployment-with-docker-stack-and-spring-boot/) for this example demo app at my blog.
+
 ## Usage
 
 ### Basics
