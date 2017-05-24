@@ -23,6 +23,12 @@ services:
       placement:
         constraints:
           - node.role==manager
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 60s
+      restart_policy:
+        condition: on-failure
 
   app:
     image: gesellix/graceful-spring-shutdown:${APP_VERSION:-2017-05-21T00-37-44}
