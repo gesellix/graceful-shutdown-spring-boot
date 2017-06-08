@@ -31,7 +31,7 @@ services:
         condition: on-failure
 
   app:
-    image: gesellix/graceful-spring-shutdown:${APP_VERSION:-2017-05-21T00-37-44}
+    image: gesellix/graceful-spring-shutdown:${APP_VERSION:-2017-06-08T13-37-02}
     networks:
       - traefik
     environment:
