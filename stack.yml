@@ -31,7 +31,9 @@ services:
         condition: on-failure
 
   app:
-    image: gesellix/graceful-spring-shutdown:${APP_VERSION:-2017-06-08T13-37-02}
+    image: gesellix/graceful-spring-shutdown:${APP_VERSION:-2017-06-08T21-58-57}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - traefik
     environment:
