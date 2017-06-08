@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter
 
 buildscript {
   ext {
-    dockerPluginVersion = '2017-05-15T00-22-47'
+    dockerPluginVersion = '2017-06-07T23-32-34'
     kotlinVersion = '1.1.2-2'
     springBootVersion = '1.5.3.RELEASE'
   }
@@ -40,10 +40,13 @@ compileTestKotlin {
 
 repositories {
   mavenCentral()
+  jcenter()
 }
 
 dependencies {
+  compile('org.springframework.boot:spring-boot-starter-actuator')
   compile('org.springframework.boot:spring-boot-starter-web')
+  compile('de.gesellix:docker-client:2017-06-07T21-30-42')
   compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
   compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
   testCompile('org.springframework.boot:spring-boot-starter-test')
