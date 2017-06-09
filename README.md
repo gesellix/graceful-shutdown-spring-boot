@@ -66,7 +66,7 @@ Deploy a minimal stack with reverse proxy and two instances of the example app:
 
 We can now start the demo scenario by first starting a download and then trying to update the app service.
  Open your browser at [http://localhost](http://localhost/) and click _go for it_, or
- use your shell to perform an endless download: `curl -X GET "http://localhost:8080/endless" > /dev/null`.
+ use your shell to perform an endless download: `curl -X GET "http://localhost/endless" > /dev/null`.
 
 You can watch your service logs with `docker service logs -f grace_app`. The browser will also show
  you the increasing number of downloaded bytes.
