@@ -38,6 +38,8 @@ services:
       - traefik
     environment:
       - "CATALINA.THREADPOOL.EXECUTION.TIMEOUT.SECONDS=30"
+    secrets:
+      - from_file
     stop_grace_period: 60s
     deploy:
       labels:
@@ -54,7 +56,32 @@ services:
       restart_policy:
         condition: on-failure
 
+  visualizer:
+      image: dockersamples/visualizer:stable
+      ports:
+        - "9001:8080"
+#      stop_grace_period: 1m30s
+      volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock"
+      deploy:
+        placement:
+          constraints: [node.role == manager]
+
+  portainer:
+      image: portainer/portainer
+      ports:
+        - "9000:9000"
+      volumes:
+        - "/var/run/docker.sock:/var/run/docker.sock"
+      deploy:
+        placement:
+          constraints: [node.role == manager]
+
 networks:
   traefik:
 #    external: true
     driver: overlay
+
+secrets:
+  from_file:
+    file: stack-secret.txt
