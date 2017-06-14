@@ -92,4 +92,15 @@ The `GracefulShutdown` class listens to application events of type `ContextClose
 
 Please note that you won't get any guarantees that the JVM will wait endlessly for your shutdown hook to return.
 It might interrupt your shutdown hook without further notice. My JVM implementation on macOS and the one in an alpine
-container seems to be patient enough :)
+container seem to be patient enough :)
+
+## Bonus
+
+Please note that there are two additional Spring Boot info contributors,
+whose results will be visible at [/info](http://localhost/info):
+
+- Docker Info contributor: provides the output of the `docker info`.
+    Expects the Docker engine to be available at `/var/run/docker.sock`.
+- Docker Secrets contributor: dumps the configured secrets _and_ their contents.
+    See the [official docs](https://docs.docker.com/engine/swarm/secrets/) for details.
+    A default example secret is already configured for your convenience.
