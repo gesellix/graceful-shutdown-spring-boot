@@ -73,10 +73,11 @@ You can watch your service logs with `docker service logs -f grace_app`. The bro
 
 An update with task downtime can easily be triggered:
 
-    docker service update --env-add "foo=bar" grace_app
+    docker service update --env-add "foo=bar" --detach=false grace_app
 
 Now keep your eye on the browser download "stats" and the service logs where you can see the Docker service
- update shutting down your tasks one by one. One of your tasks will be shut down instantly, because it won't be
+ update shutting down your tasks one by one. We also use the detach option `--detach=false` to watch the service 
+ update states in real-time from the cli. One of your tasks will be shut down instantly, because it won't be
  "locked" by your download. But the other task shutdown should be prevented to approximately 30 seconds.
  Only then the Spring Boot shutdown will continue and Docker won't enforce the shutdown through `SIGKILL`. 
 
