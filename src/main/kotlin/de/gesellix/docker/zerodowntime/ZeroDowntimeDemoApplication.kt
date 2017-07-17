@@ -8,7 +8,6 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.annotation.Bean
 import java.util.concurrent.TimeUnit
 
-
 @SpringBootApplication
 class ZeroDowntimeDemoApplication {
 

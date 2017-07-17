@@ -18,8 +18,15 @@ class GracefulShutdown(val shutdownTimeout: Long, val unit: TimeUnit) : TomcatCo
     }
 
     override fun onApplicationEvent(event: ContextClosedEvent) {
-        this.connector!!.pause()
-        val executor = this.connector!!.protocolHandler.executor
+        if (this.connector == null) {
+            return
+        }
+        awaitTermination(this.connector!!)
+    }
+
+    fun awaitTermination(connector: Connector) {
+        connector.pause()
+        val executor = connector.protocolHandler.executor
         if (executor is ThreadPoolExecutor) {
             log.warn("Context closed. Going to await termination for $shutdownTimeout $unit.")
             try {
