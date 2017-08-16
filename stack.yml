@@ -57,13 +57,15 @@ services:
         condition: on-failure
 
   visualizer:
-      image: dockersamples/visualizer:stable
+      image: charypar/swarm-dashboard
       ports:
         - "9001:8080"
-#      stop_grace_period: 1m30s
+      environment:
+        PORT: 8080
       volumes:
         - "/var/run/docker.sock:/var/run/docker.sock"
       deploy:
+        replicas: 1
         placement:
           constraints: [node.role == manager]
 
