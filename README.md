@@ -1,3 +1,9 @@
+**This concept has been made available in Spring Boot 2.3.+**
+
+See https://github.com/spring-projects/spring-boot/releases/tag/v2.3.0.RELEASE and https://github.com/spring-projects/spring-boot/issues/21325 for details.
+
+---
+
 # Graceful Shutdown with Spring Boot
 
 In a modern world, we expect webapps to always be available.
